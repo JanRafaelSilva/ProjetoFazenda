@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerController1 : MonoBehaviour
 {
@@ -14,7 +16,9 @@ public class PlayerController1 : MonoBehaviour
     private InputAction moveAction;
     private InputAction fireAction;
     private InputAction pausaActionPlayer;
-    private InputAction pausaActionUI;
+    private InputAction pausaActionUI; 
+
+    private InputAction GhostAction;
     public GameObject painel;
 
     // Update is called once per frame  
@@ -33,6 +37,7 @@ public class PlayerController1 : MonoBehaviour
         fireAction = InputSystem.actions.FindAction("Jump");
         pausaActionPlayer = InputSystem.actions.FindAction("Pausa");
         pausaActionUI = InputSystem.actions.FindAction("Despausa");
+        GhostAction = InputSystem.actions.FindAction("Ghost");
     }
     void Update()
     {
@@ -48,10 +53,19 @@ public class PlayerController1 : MonoBehaviour
         {
             transform.position = new Vector3(xRange, transform.position.y, transform.position.y);
         }
-        if(fireAction.WasPressedThisFrame())
+        if(fireAction.WasReleasedThisFrame())
         {
             Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation);
 
+        }
+        if (GhostAction.IsPressed())
+        {
+            this.gameObject.SetActive(false);
+            //if(GhostAction.h)
+
+        }else if (GhostAction.WasReleasedThisFrame())
+        {
+            this.gameObject.SetActive(true);
         }
         PauseGame();
        
